@@ -30,13 +30,20 @@ jobs:
     #       sudo apt install -y google-chrome-stable
     #       CHROME_VERSION=$(google-chrome --version | awk '{print $3}')
     #       sudo apt install -y chromium-chromedriver
+
+      - name: Set permissions for EdgeDriver
+        run: sudo chmod +x /usr/local/bin/msedgedriver
+
+
       - name: Install Edge & EdgeDriver
         run: |
-            sudo apt update
-            sudo apt install -y microsoft-edge-stable
-            wget -q https://msedgedriver.azureedge.net/latest/linux64_msedgedriver.zip
-            unzip linux64_msedgedriver.zip
+            sudo apt update || sudo apt update --allow-releaseinfo-change
+            sudo apt install -y microsoft-edge-stable || sudo apt install -y microsoft-edge-beta
+            EDGE_VERSION=$(microsoft-edge --version | awk '{print $3}')
+            wget "https://msedgedriver.azureedge.net/${EDGE_VERSION}/edgedriver_linux64.zip"
+            unzip -o edgedriver_linux64.zip
             sudo mv msedgedriver /usr/local/bin/
+            sudo chmod +x /usr/local/bin/msedgedriver
 
       - name: Fix permissions for Mocha
         run: chmod +x node_modules/.bin/mocha
