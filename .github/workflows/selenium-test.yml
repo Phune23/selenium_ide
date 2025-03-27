@@ -45,10 +45,16 @@ jobs:
         run: chmod +x node_modules/.bin/mocha
     
       - name: Run Selenium Tests
-        run: npx mocha tC2.spec.js  # 📌 Chạy test Selenium
+        run: |
+          mkdir -p test-results  # 🔹 Đảm bảo thư mục tồn tại
+          npx mocha tC2.spec.js --reporter mochawesome --reporter-options reportDir=./test-results,reportFilename=report.json
+
+      - name: Debug test results
+        run: ls -la test-results/  # 🔍 Kiểm tra thư mục test-results có file không
 
       - name: Upload test results (optional)
         uses: actions/upload-artifact@v4
         with:
           name: test-results
-          path: test-results/ # ✅ Đảm bảo Mocha xuất kết quả vào thư mục này
+          path: test-results/  # ✅ Đảm bảo Mocha xuất file vào đúng thư mục
+
