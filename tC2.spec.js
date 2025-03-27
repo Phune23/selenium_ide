@@ -9,14 +9,16 @@ describe('TC2', function () {
 
   beforeEach(async function () {
     let options = new edge.Options();
-    options.addArguments("--guest"); // ✅ Chạy chế độ Guest để tránh lỗi
-    options.addArguments("--headless=new"); // ✅ Chạy headless cho CI/CD
-    options.addArguments("--disable-gpu"); // ✅ Fix lỗi WebGL
-    options.addArguments("--no-sandbox"); // ✅ Tránh lỗi quyền trên Linux CI/CD
+    options.setBinary('/usr/bin/microsoft-edge');  // ✅ Chỉ định đúng binary Edge
+    options.addArguments("--guest"); 
+    options.addArguments("--headless=new");  
+    options.addArguments("--disable-gpu"); 
+    options.addArguments("--no-sandbox");
 
     driver = await new Builder()
       .forBrowser('MicrosoftEdge')
       .setEdgeOptions(options)
+      .usingServer('http://localhost:4444/wd/hub')  // ✅ Chỉ định server WebDriver (nếu cần)
       .build();
 
     vars = {};

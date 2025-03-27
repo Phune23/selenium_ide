@@ -29,11 +29,11 @@ jobs:
             sudo apt update || sudo apt update --allow-releaseinfo-change
             sudo apt install -y microsoft-edge-stable || sudo apt install -y microsoft-edge-beta
             EDGE_VERSION=$(microsoft-edge --version | awk '{print $3}')
-            echo "Edge Version: $EDGE_VERSION"  # ✅ Kiểm tra phiên bản
-            wget -O msedgedriver.zip "https://msedgedriver.azureedge.net/${EDGE_VERSION}/edgedriver_linux64.zip"
-            unzip -o msedgedriver.zip
-            sudo mv msedgedriver /usr/local/bin/
+            wget "https://msedgedriver.azureedge.net/${EDGE_VERSION}/edgedriver_linux64.zip"
+            unzip -o edgedriver_linux64.zip
+            sudo mv msedgedriver /usr/local/bin/msedgedriver
             sudo chmod +x /usr/local/bin/msedgedriver
+            echo "✅ Edge & EdgeDriver installed successfully!"
 
       - name: Verify EdgeDriver installation
         run: |
