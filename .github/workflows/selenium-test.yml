@@ -25,7 +25,8 @@ jobs:
         run: npm install  # 📌 Cài đặt thư viện
 
       - name: Run Selenium tests with Mocha
-        run: npx mocha tC2.spec.js
+        # run: npx mocha tC2.spec.js
+        run: node_modules/.bin/mocha tC2.spec.js
 
     #   - name: Install Chrome & ChromeDriver
     #     run: |
