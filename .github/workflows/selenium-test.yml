@@ -24,26 +24,22 @@ jobs:
       - name: Install dependencies
         run: npm install  # 📌 Cài đặt thư viện
 
-    #   - name: Install Chrome & ChromeDriver
-    #     run: |
-    #       sudo apt update
-    #       sudo apt install -y google-chrome-stable
-    #       CHROME_VERSION=$(google-chrome --version | awk '{print $3}')
-    #       sudo apt install -y chromium-chromedriver
-
-      - name: Set permissions for EdgeDriver
-        run: sudo chmod +x /usr/local/bin/msedgedriver
-
-
       - name: Install Edge & EdgeDriver
         run: |
             sudo apt update || sudo apt update --allow-releaseinfo-change
             sudo apt install -y microsoft-edge-stable || sudo apt install -y microsoft-edge-beta
             EDGE_VERSION=$(microsoft-edge --version | awk '{print $3}')
-            wget "https://msedgedriver.azureedge.net/${EDGE_VERSION}/edgedriver_linux64.zip"
-            unzip -o edgedriver_linux64.zip
+            echo "Edge Version: $EDGE_VERSION"  # ✅ Kiểm tra phiên bản
+            wget -O msedgedriver.zip "https://msedgedriver.azureedge.net/${EDGE_VERSION}/edgedriver_linux64.zip"
+            unzip -o msedgedriver.zip
             sudo mv msedgedriver /usr/local/bin/
             sudo chmod +x /usr/local/bin/msedgedriver
+
+      - name: Verify EdgeDriver installation
+        run: |
+            ls -l /usr/local/bin/
+            which msedgedriver
+            msedgedriver --version  # ✅ Kiểm tra driver đã cài đặt đúng chưa
 
       - name: Fix permissions for Mocha
         run: chmod +x node_modules/.bin/mocha
