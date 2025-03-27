@@ -1,0 +1,49 @@
+name: Run Selenium Tests  # 📌 Tên workflow
+
+on:
+  push:
+    branches:
+      - main  # 📌 Chạy khi có commit vào nhánh `main`
+  pull_request:
+    branches:
+      - main  # 📌 Chạy khi có PR vào nhánh `main`
+
+jobs:
+  test:
+    runs-on: ubuntu-latest  # 📌 Chạy trên môi trường Ubuntu
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3  # 📌 Lấy code từ repo về máy runner
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18  # 📌 Dùng Node.js 18
+
+      - name: Install dependencies
+        run: npm install  # 📌 Cài đặt thư viện
+
+    #   - name: Install Chrome & ChromeDriver
+    #     run: |
+    #       sudo apt update
+    #       sudo apt install -y google-chrome-stable
+    #       CHROME_VERSION=$(google-chrome --version | awk '{print $3}')
+    #       sudo apt install -y chromium-chromedriver
+      - name: Install Edge & EdgeDriver
+        run: |
+            sudo apt update
+            sudo apt install -y microsoft-edge-stable
+            EDGE_VERSION=$(microsoft-edge --version | awk '{print $3}')
+            sudo apt install -y webdriver-manager
+            sudo webdriver-manager update --edge
+
+
+      - name: Run Selenium Tests
+        run: npx mocha tC2.spec.js  # 📌 Chạy test Selenium
+
+      - name: Upload test results (optional)
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results
+          path: test-results/

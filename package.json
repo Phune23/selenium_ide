@@ -1,0 +1,17 @@
+{
+  "name": "selenium_ide",
+  "version": "1.0.0",
+  "main": "tC2.spec.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "assert": "^2.1.0",
+    "mocha": "^11.1.0",
+    "selenium-webdriver": "^4.30.0"
+  }
+}
