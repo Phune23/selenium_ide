@@ -8,15 +8,16 @@ describe('TC2', function () {
   let vars;
 
   beforeEach(async function () {
+    let service = new edge.ServiceBuilder('/usr/local/bin/msedgedriver'); // 🔹 Đặt đường dẫn EdgeDriver
     let options = new edge.Options();
-    options.addArguments("--guest"); 
     options.addArguments("--headless=new");  
     options.addArguments("--disable-gpu"); 
     options.addArguments("--no-sandbox");
 
     driver = await new Builder()
       .forBrowser('MicrosoftEdge')
-      .setEdgeOptions(options) // ✅ Không dùng setBinary()
+      .setEdgeService(service) // 🔹 Đặt Service
+      .setEdgeOptions(options)
       .build();
 
     vars = {};
