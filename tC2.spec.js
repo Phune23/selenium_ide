@@ -1,3 +1,5 @@
+const fs = require('fs');
+const path = require('path');
 const { Builder, By, Key, until } = require('selenium-webdriver');
 const edge = require('selenium-webdriver/edge');
 const assert = require('assert');
@@ -8,16 +10,21 @@ describe('TC2', function () {
   let vars;
 
   beforeEach(async function () {
+    let userDataDir = "/tmp/edge_user_data";
+
+    // ❌ Xoá thư mục nếu tồn tại để tránh lỗi
+    if (fs.existsSync(userDataDir)) {
+      fs.rmSync(userDataDir, { recursive: true, force: true });
+    }
+
     let service = new edge.ServiceBuilder('/usr/local/bin/msedgedriver');
     let options = new edge.Options();
-    
-    // ✅ Thêm tham số --user-data-dir để tránh xung đột
-    options.addArguments("--user-data-dir=/tmp/edge_user_data");
+    options.addArguments(`--user-data-dir=${userDataDir}`);
 
     driver = await new Builder()
       .forBrowser('MicrosoftEdge')
       .setEdgeService(service)
-      .setEdgeOptions(options)  // ✅ Thêm tùy chọn vào Edge
+      .setEdgeOptions(options)
       .build();
 
     vars = {};
