@@ -1,6 +1,4 @@
-const fs = require('fs');
-const path = require('path');
-const { Builder, By, Key, until } = require('selenium-webdriver');
+const { Builder, By, until } = require('selenium-webdriver');
 const edge = require('selenium-webdriver/edge');
 const assert = require('assert');
 
@@ -10,20 +8,14 @@ describe('TC2', function () {
   let vars;
 
   beforeEach(async function () {
-    let userDataDir = "/tmp/edge_user_data";
-
-    // ❌ Xoá thư mục nếu tồn tại để tránh lỗi
-    if (fs.existsSync(userDataDir)) {
-      fs.rmSync(userDataDir, { recursive: true, force: true });
-    }
-
-    let service = new edge.ServiceBuilder('/usr/local/bin/msedgedriver');
     let options = new edge.Options();
-    options.addArguments(`--user-data-dir=${userDataDir}`);
+    options.addArguments("--guest"); // ✅ Chạy chế độ Guest để tránh lỗi
+    options.addArguments("--headless=new"); // ✅ Chạy headless cho CI/CD
+    options.addArguments("--disable-gpu"); // ✅ Fix lỗi WebGL
+    options.addArguments("--no-sandbox"); // ✅ Tránh lỗi quyền trên Linux CI/CD
 
     driver = await new Builder()
       .forBrowser('MicrosoftEdge')
-      .setEdgeService(service)
       .setEdgeOptions(options)
       .build();
 
@@ -40,8 +32,11 @@ describe('TC2', function () {
     await driver.get("https://webchatonline.onrender.com/signup");
     await driver.manage().window().setRect(1920, 1032);
     await driver.findElement(By.css(".btn")).click();
+    
     const elements = await driver.findElements(By.xpath("//div[@role='status']"));
-    assert(elements.length);
-    assert(await driver.findElement(By.xpath("//div[@role='status']")).getText() == "Please fill in all fields");
+    assert(elements.length > 0, "Không tìm thấy thông báo lỗi");
+    
+    const statusText = await driver.findElement(By.xpath("//div[@role='status']")).getText();
+    assert.strictEqual(statusText, "Please fill in all fields", "Thông báo lỗi không đúng");
   });
 });
