@@ -34,9 +34,7 @@ jobs:
         run: |
             sudo apt update
             sudo apt install -y microsoft-edge-stable
-            EDGE_VERSION=$(microsoft-edge --version | awk '{print $3}')
-            sudo apt install -y webdriver-manager
-            sudo webdriver-manager update --edge
+            pip install webdriver-manager
 
 
       - name: Run Selenium Tests
