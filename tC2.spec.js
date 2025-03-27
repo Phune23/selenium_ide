@@ -9,7 +9,6 @@ describe('TC2', function () {
 
   beforeEach(async function () {
     let options = new edge.Options();
-    options.setBinary('/usr/bin/microsoft-edge');  // ✅ Chỉ định đúng binary Edge
     options.addArguments("--guest"); 
     options.addArguments("--headless=new");  
     options.addArguments("--disable-gpu"); 
@@ -17,8 +16,7 @@ describe('TC2', function () {
 
     driver = await new Builder()
       .forBrowser('MicrosoftEdge')
-      .setEdgeOptions(options)
-      .usingServer('http://localhost:4444/wd/hub')  // ✅ Chỉ định server WebDriver (nếu cần)
+      .setEdgeOptions(options) // ✅ Không dùng setBinary()
       .build();
 
     vars = {};
