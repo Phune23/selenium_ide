@@ -24,10 +24,6 @@ jobs:
       - name: Install dependencies
         run: npm install  # 📌 Cài đặt thư viện
 
-      - name: Run Selenium tests with Mocha
-        # run: npx mocha tC2.spec.js
-        run: node_modules/.bin/mocha tC2.spec.js
-
     #   - name: Install Chrome & ChromeDriver
     #     run: |
     #       sudo apt update
@@ -40,7 +36,9 @@ jobs:
             sudo apt install -y microsoft-edge-stable
             pip install webdriver-manager
 
-
+      - name: Fix permissions for Mocha
+        run: chmod +x node_modules/.bin/mocha
+    
       - name: Run Selenium Tests
         run: npx mocha tC2.spec.js  # 📌 Chạy test Selenium
 
