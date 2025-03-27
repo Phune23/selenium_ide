@@ -34,7 +34,9 @@ jobs:
         run: |
             sudo apt update
             sudo apt install -y microsoft-edge-stable
-            pip install webdriver-manager
+            wget -q https://msedgedriver.azureedge.net/latest/linux64_msedgedriver.zip
+            unzip linux64_msedgedriver.zip
+            sudo mv msedgedriver /usr/local/bin/
 
       - name: Fix permissions for Mocha
         run: chmod +x node_modules/.bin/mocha
