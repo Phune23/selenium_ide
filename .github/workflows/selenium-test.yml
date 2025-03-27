@@ -24,6 +24,9 @@ jobs:
       - name: Install dependencies
         run: npm install  # 📌 Cài đặt thư viện
 
+      - name: Run Selenium tests with Mocha
+        run: npx mocha tC2.spec.js
+
     #   - name: Install Chrome & ChromeDriver
     #     run: |
     #       sudo apt update
